@@ -1,0 +1,238 @@
+/**
+ * Add-ons Page Scripts
+ *
+ * Handles client-side category filtering, search with debounce,
+ * and keyboard accessibility for the add-ons grid.
+ *
+ * @package ArrayPress\RegisterAddons
+ */
+
+(function () {
+    'use strict';
+
+    /* =========================================================================
+     * DOM REFERENCES
+     * ========================================================================= */
+
+    var grid = document.getElementById('addons-grid');
+    var noResults = document.getElementById('addons-no-results');
+    var searchInput = document.getElementById('addons-search');
+    var categoryBtns = document.querySelectorAll('.addons-category-btn');
+
+    if (!grid) {
+        return;
+    }
+
+    var cards = grid.querySelectorAll('.addon-card');
+
+    /* =========================================================================
+     * STATE
+     * ========================================================================= */
+
+    var activeCategory = 'all';
+    var searchTerm = '';
+    var debounceTimer = null;
+    var DEBOUNCE_MS = 200;
+
+    /* =========================================================================
+     * URL STATE
+     * ========================================================================= */
+
+    /**
+     * Read initial state from URL parameters
+     */
+    function readUrlState() {
+        var params = new URLSearchParams(window.location.search);
+        var cat = params.get('category');
+        var search = params.get('s');
+
+        if (cat && cat !== 'all') {
+            activeCategory = cat;
+
+            // Activate the correct category button
+            for (var i = 0; i < categoryBtns.length; i++) {
+                var btn = categoryBtns[i];
+
+                if (btn.getAttribute('data-category') === cat) {
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-selected', 'true');
+                } else {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                }
+            }
+        }
+
+        if (search && searchInput) {
+            searchTerm = search.toLowerCase().trim();
+            searchInput.value = search;
+        }
+    }
+
+    /**
+     * Update URL parameters without page reload
+     */
+    function updateUrl() {
+        if (!window.history || !window.history.replaceState) {
+            return;
+        }
+
+        var params = new URLSearchParams(window.location.search);
+
+        // Category
+        if (activeCategory && activeCategory !== 'all') {
+            params.set('category', activeCategory);
+        } else {
+            params.delete('category');
+        }
+
+        // Search
+        if (searchTerm) {
+            params.set('s', searchTerm);
+        } else {
+            params.delete('s');
+        }
+
+        var newUrl = window.location.pathname + '?' + params.toString();
+        window.history.replaceState(null, '', newUrl);
+    }
+
+    /* =========================================================================
+     * FILTERING
+     * ========================================================================= */
+
+    /**
+     * Filter cards based on active category and search term
+     *
+     * Uses the data-search attribute which contains a pre-built
+     * searchable string of title, description, category label,
+     * and badge text.
+     */
+    function filterCards() {
+        var visibleCount = 0;
+
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            var category = card.getAttribute('data-category');
+            var searchText = card.getAttribute('data-search') || '';
+
+            // Category match
+            var matchCategory = (activeCategory === 'all' || category === activeCategory);
+
+            // Search match — check against the composite search attribute
+            var matchSearch = true;
+            if (searchTerm) {
+                // Split search into words for multi-word matching
+                var words = searchTerm.split(/\s+/);
+
+                for (var w = 0; w < words.length; w++) {
+                    if (words[w] && searchText.indexOf(words[w]) === -1) {
+                        matchSearch = false;
+                        break;
+                    }
+                }
+            }
+
+            if (matchCategory && matchSearch) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        }
+
+        // Toggle no results message
+        if (noResults) {
+            noResults.style.display = visibleCount === 0 ? '' : 'none';
+        }
+
+        // Toggle grid visibility (prevents empty grid gap)
+        grid.style.display = visibleCount === 0 ? 'none' : '';
+
+        // Update URL
+        updateUrl();
+    }
+
+    /* =========================================================================
+     * CATEGORY BUTTONS
+     * ========================================================================= */
+
+    for (var i = 0; i < categoryBtns.length; i++) {
+        categoryBtns[i].addEventListener('click', function () {
+            // Update active state
+            for (var j = 0; j < categoryBtns.length; j++) {
+                categoryBtns[j].classList.remove('active');
+                categoryBtns[j].setAttribute('aria-selected', 'false');
+            }
+
+            this.classList.add('active');
+            this.setAttribute('aria-selected', 'true');
+            activeCategory = this.getAttribute('data-category');
+
+            filterCards();
+        });
+
+        // Keyboard navigation between category buttons
+        categoryBtns[i].addEventListener('keydown', function (e) {
+            var index = Array.prototype.indexOf.call(categoryBtns, this);
+            var next = -1;
+
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                next = (index + 1) % categoryBtns.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                next = (index - 1 + categoryBtns.length) % categoryBtns.length;
+            } else if (e.key === 'Home') {
+                next = 0;
+            } else if (e.key === 'End') {
+                next = categoryBtns.length - 1;
+            }
+
+            if (next >= 0) {
+                e.preventDefault();
+                categoryBtns[next].focus();
+                categoryBtns[next].click();
+            }
+        });
+    }
+
+    /* =========================================================================
+     * SEARCH INPUT
+     * ========================================================================= */
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            var value = this.value.toLowerCase().trim();
+
+            // Debounce
+            if (debounceTimer) {
+                clearTimeout(debounceTimer);
+            }
+
+            debounceTimer = setTimeout(function () {
+                searchTerm = value;
+                filterCards();
+            }, DEBOUNCE_MS);
+        });
+
+        // Clear search on Escape
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && this.value) {
+                e.preventDefault();
+                this.value = '';
+                searchTerm = '';
+                filterCards();
+            }
+        });
+    }
+
+    /* =========================================================================
+     * INIT
+     * ========================================================================= */
+
+    readUrlState();
+
+    // Apply initial filters if URL had state
+    if (activeCategory !== 'all' || searchTerm) {
+        filterCards();
+    }
+})();

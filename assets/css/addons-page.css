@@ -1,0 +1,554 @@
+/**
+ * Add-ons Page Styles
+ *
+ * @package ArrayPress\RegisterAddons
+ */
+
+/* ==========================================================================
+   Custom Properties
+   ========================================================================== */
+
+:root {
+    /* Text */
+    --ao-text-primary: #1d2327;
+    --ao-text-secondary: #646970;
+    --ao-text-muted: #a7aaad;
+
+    /* Borders */
+    --ao-border: #c3c4c7;
+    --ao-border-light: #e0e0e0;
+
+    /* Backgrounds */
+    --ao-bg-white: #fff;
+    --ao-bg-subtle: #f6f7f7;
+
+    /* Links / Accent */
+    --ao-accent: #2271b1;
+    --ao-accent-hover: #135e96;
+
+    /* Status */
+    --ao-success: #00a32a;
+
+    /* Pro banner */
+    --ao-pro-bg: linear-gradient(135deg, #1e3a5f 0%, #2271b1 100%);
+    --ao-pro-text: #fff;
+
+    /* Badges */
+    --ao-badge-popular-bg: #fcf0e3;
+    --ao-badge-popular-text: #9a6700;
+    --ao-badge-new-bg: #edfaef;
+    --ao-badge-new-text: #1a7a2e;
+    --ao-badge-recommended-bg: #e5f0fa;
+    --ao-badge-recommended-text: #1d4ed8;
+    --ao-badge-coming-soon-bg: #f0f0f1;
+    --ao-badge-coming-soon-text: #50575e;
+
+    /* Radius */
+    --ao-radius: 6px;
+    --ao-radius-lg: 8px;
+}
+
+/* ==========================================================================
+   Header
+   Reuses list-table-header classes from wp-register-tables.
+   These rules ensure the header works standalone when the tables
+   library is not loaded.
+   ========================================================================== */
+
+.addons-page .list-table-header {
+    background: var(--ao-bg-white);
+    border-bottom: 1px solid var(--ao-border);
+    margin: 0 0 0 -20px;
+    padding: 0 20px;
+}
+
+.addons-page .list-table-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 80px;
+}
+
+.addons-page .list-table-header__branding {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.addons-page .list-table-header__logo {
+    max-height: 36px;
+    width: auto;
+}
+
+.addons-page .list-table-header__separator {
+    color: var(--ao-border);
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.addons-page .list-table-header__title {
+    margin: 0;
+    padding: 0;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ao-text-primary);
+}
+
+.addons-page .list-table-header__title .count {
+    color: var(--ao-text-secondary);
+    font-weight: 400;
+    font-size: 14px;
+}
+
+/* Header badge (standalone fallback) */
+.addons-page .list-table-header__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 10px;
+    margin-left: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 3px;
+    background: #f0f0f1;
+    color: #50575e;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   Wrap
+   ========================================================================== */
+
+.addons-wrap {
+    max-width: 1200px;
+    margin-top: 20px;
+}
+
+.addons-wrap .notice {
+    margin: 0 0 16px 0;
+}
+
+/* ==========================================================================
+   Pro Banner
+   ========================================================================== */
+
+.addons-pro-banner {
+    background: var(--ao-pro-bg);
+    border-radius: var(--ao-radius-lg);
+    padding: 24px 32px;
+    margin-bottom: 24px;
+}
+
+.addons-pro-banner__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.addons-pro-banner__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ao-pro-text);
+}
+
+.addons-pro-banner__title .dashicons {
+    color: #f0c33c;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.addons-pro-banner__description {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.addons-pro-banner__action .button-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    background: #fff;
+    color: #1e3a5f;
+    border: none;
+    font-weight: 600;
+}
+
+.addons-pro-banner__action .button-hero:hover {
+    background: #f0f0f1;
+    color: #1e3a5f;
+}
+
+.addons-pro-banner__action .button-hero .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+}
+
+/* ==========================================================================
+   Toolbar
+   ========================================================================== */
+
+.addons-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.addons-toolbar__categories {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.addons-category-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border: 1px solid var(--ao-border);
+    border-radius: 20px;
+    background: var(--ao-bg-white);
+    color: var(--ao-text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    line-height: 1.4;
+}
+
+.addons-category-btn:hover {
+    border-color: var(--ao-accent);
+    color: var(--ao-accent);
+}
+
+.addons-category-btn:focus-visible {
+    outline: 2px solid var(--ao-accent);
+    outline-offset: 2px;
+}
+
+.addons-category-btn.active {
+    background: var(--ao-accent);
+    border-color: var(--ao-accent);
+    color: #fff;
+}
+
+.addons-category-btn .count {
+    font-size: 11px;
+    opacity: 0.7;
+}
+
+/* Search */
+.addons-toolbar__search {
+    position: relative;
+    min-width: 240px;
+}
+
+.addons-search-input {
+    width: 100%;
+    padding: 7px 12px 7px 32px;
+    border: 1px solid var(--ao-border);
+    border-radius: var(--ao-radius);
+    font-size: 13px;
+    background: var(--ao-bg-white);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.addons-search-input:focus {
+    border-color: var(--ao-accent);
+    box-shadow: 0 0 0 1px var(--ao-accent);
+}
+
+.addons-search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: var(--ao-text-muted);
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   Card Grid
+   ========================================================================== */
+
+.addons-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.addons-grid--cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.addons-grid--cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.addons-grid--cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* ==========================================================================
+   Add-on Card
+   ========================================================================== */
+
+.addon-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--ao-bg-white);
+    border: 1px solid var(--ao-border-light);
+    border-radius: var(--ao-radius-lg);
+    overflow: hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.addon-card:hover {
+    border-color: var(--ao-border);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Active card indicator */
+.addon-card--active {
+    border-color: var(--ao-success);
+}
+
+/* Badge */
+.addon-card__badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+    z-index: 1;
+}
+
+.addon-card__badge--popular {
+    background: var(--ao-badge-popular-bg);
+    color: var(--ao-badge-popular-text);
+}
+
+.addon-card__badge--new {
+    background: var(--ao-badge-new-bg);
+    color: var(--ao-badge-new-text);
+}
+
+.addon-card__badge--recommended {
+    background: var(--ao-badge-recommended-bg);
+    color: var(--ao-badge-recommended-text);
+}
+
+.addon-card__badge--coming_soon {
+    background: var(--ao-badge-coming-soon-bg);
+    color: var(--ao-badge-coming-soon-text);
+}
+
+/* Image */
+.addon-card__image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 160px;
+    background: var(--ao-bg-subtle);
+    border-bottom: 1px solid var(--ao-border-light);
+    overflow: hidden;
+}
+
+.addon-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.addon-card__image .dashicons {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: var(--ao-text-muted);
+}
+
+/* Content */
+.addon-card__content {
+    flex: 1;
+    padding: 16px 20px 12px;
+}
+
+.addon-card__title {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ao-text-primary);
+    line-height: 1.4;
+}
+
+.addon-card__description {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ao-text-secondary);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Footer */
+.addon-card__footer {
+    padding: 12px 20px 16px;
+    border-top: 1px solid var(--ao-border-light);
+}
+
+/* Buttons */
+.addon-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--ao-radius);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+}
+
+.addon-card__btn--get {
+    background: var(--ao-accent);
+    border-color: var(--ao-accent);
+    color: #fff;
+}
+
+.addon-card__btn--get:hover,
+.addon-card__btn--get:focus {
+    background: var(--ao-accent-hover);
+    border-color: var(--ao-accent-hover);
+    color: #fff;
+}
+
+.addon-card__btn--activate {
+    border: 1px solid var(--ao-accent);
+    color: var(--ao-accent);
+    background: var(--ao-bg-white);
+}
+
+.addon-card__btn--activate:hover,
+.addon-card__btn--activate:focus {
+    background: var(--ao-accent);
+    color: #fff;
+}
+
+/* Status indicators */
+.addon-card__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.addon-card__status--active {
+    color: var(--ao-success);
+}
+
+.addon-card__status--active .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.addon-card__status--installed {
+    color: var(--ao-text-secondary);
+}
+
+/* ==========================================================================
+   No Results
+   ========================================================================== */
+
+.addons-no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ao-text-muted);
+}
+
+.addons-no-results .dashicons {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+}
+
+.addons-no-results p {
+    font-size: 14px;
+    color: var(--ao-text-secondary);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media screen and (max-width: 1100px) {
+    .addons-grid--cols-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .addons-grid--cols-3,
+    .addons-grid--cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .addons-pro-banner__content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 782px) {
+    .addons-page .list-table-header {
+        margin-left: -10px;
+        padding: 0 10px;
+    }
+
+    .addons-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .addons-toolbar__search {
+        min-width: auto;
+    }
+
+    .addons-grid--cols-2,
+    .addons-grid--cols-3,
+    .addons-grid--cols-4 {
+        grid-template-columns: 1fr;
+    }
+}
