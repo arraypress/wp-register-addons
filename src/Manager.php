@@ -148,22 +148,7 @@ class Manager {
 		}
 
 		// Normalize add-ons
-		foreach ( $config['addons'] as $key => &$addon ) {
-			$addon = wp_parse_args( $addon, [
-				'title'       => '',
-				'description' => '',
-				'image'       => '',
-				'image_bg'    => '',
-				'icon'        => '',
-				'plugin'      => '',
-				'url'         => '',
-				'category'    => '',
-				'badge'       => '',
-				'type'        => 'plugin',
-				'status'      => null,
-			] );
-		}
-		unset( $addon );
+		$config['addons'] = self::normalize_addons( $config['addons'] );
 
 		self::$pages[ $id ] = $config;
 	}
@@ -778,7 +763,7 @@ class Manager {
 				</span>
 			<?php endif; ?>
 
-			<div class="addon-card__image"<?php if ( ! empty( $addon['image_bg'] ) ) : ?> style="--ao-image-bg: <?php echo esc_attr( $addon['image_bg'] ); ?>"<?php endif; ?>>
+			<div class="addon-card__image"<?php if ( ! empty( $addon['background'] ) ) : ?> style="--ao-image-bg: <?php echo esc_attr( $addon['background'] ); ?>"<?php endif; ?>>
 				<?php if ( ! empty( $addon['image'] ) ) : ?>
 					<img src="<?php echo esc_url( $addon['image'] ); ?>"
 					     alt="<?php echo esc_attr( $addon['title'] ); ?>"
@@ -943,6 +928,39 @@ class Manager {
 	/* =========================================================================
 	 * UTILITY METHODS
 	 * ========================================================================= */
+
+	/**
+	 * Normalize add-on definitions
+	 *
+	 * Ensures every add-on has all required keys with sensible defaults.
+	 *
+	 * @param array $addons Raw add-on definitions.
+	 *
+	 * @return array Normalized add-on definitions.
+	 * @since 1.0.0
+	 */
+	private static function normalize_addons( array $addons ): array {
+		$defaults = [
+			'title'       => '',
+			'description' => '',
+			'image'       => '',
+			'background'  => '',
+			'icon'        => '',
+			'plugin'      => '',
+			'url'         => '',
+			'category'    => '',
+			'badge'       => '',
+			'type'        => 'plugin',
+			'status'      => null,
+		];
+
+		foreach ( $addons as $key => &$addon ) {
+			$addon = wp_parse_args( $addon, $defaults );
+		}
+		unset( $addon );
+
+		return $addons;
+	}
 
 	/**
 	 * Get category counts from resolved add-ons

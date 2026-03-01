@@ -117,6 +117,7 @@ Each add-on supports the following options:
         'title'       => 'Stripe Connect',              // Display name (required)
         'description' => 'Accept marketplace payments.', // Card description
         'image'       => 'https://.../stripe.png',       // Card image URL
+        'background'  => '#f0f0ff',                      // Image area background (color or gradient)
         'icon'        => 'dashicons-cart',                // Fallback dashicon (if no image)
         'plugin'      => 'my-stripe/my-stripe.php',       // Plugin basename for auto-detection
         'url'         => 'https://yoursite.com/...',       // Purchase/info URL
