@@ -134,9 +134,9 @@ When a `plugin` basename is provided, the library automatically detects the add-
 
 | Status        | Condition                         | Card Action       |
 |---------------|-----------------------------------|-------------------|
-| **Active**    | Plugin is installed and activated | Green checkmark   |
-| **Installed** | Plugin exists but is not active   | "Activate" button |
-| **Available** | Plugin is not installed           | "Get This Add-on" |
+| **Active**    | Plugin is installed and activated  | Green checkmark   |
+| **Installed** | Plugin exists but is not active    | "Activate" button |
+| **Available** | Plugin is not installed            | "Get This Add-on" |
 
 The "Activate" button works directly from the add-ons page with nonce verification.
 
@@ -172,13 +172,13 @@ Force a specific status regardless of plugin detection:
 
 Badges appear in the top-right corner of add-on cards:
 
-| Badge Key     | Display Text | Color |
-|---------------|--------------|-------|
-| `popular`     | Popular      | Amber |
-| `new`         | New          | Green |
-| `recommended` | Recommended  | Blue  |
-| `coming_soon` | Coming Soon  | Gray  |
-| Custom string | Auto-labeled | Gray  |
+| Badge Key       | Display Text  | Color  |
+|-----------------|---------------|--------|
+| `popular`       | Popular       | Amber  |
+| `new`           | New           | Green  |
+| `recommended`   | Recommended   | Blue   |
+| `coming_soon`   | Coming Soon   | Gray   |
+| Custom string   | Auto-labeled  | Gray   |
 
 ## Categories
 
