@@ -260,10 +260,10 @@
 
 .addons-search-input {
     width: 100%;
-    padding: 7px 12px 7px 24px;
-    border: 1px solid var(--ao-border);
-    border-radius: var(--ao-radius);
-    font-size: 13px;
+    padding: 7px 12px 7px 24px !important;
+    border: 1px solid var(--ao-border) !important;
+    border-radius: var(--ao-radius) !important;
+    font-size: 13px !important;
     background: var(--ao-bg-white);
     outline: none;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -373,6 +373,7 @@
     align-items: center;
     justify-content: center;
     aspect-ratio: 2 / 1;
+    max-height: 150px;
     background: var(--ao-image-bg);
     border-bottom: 1px solid var(--ao-border-light);
     overflow: hidden;
