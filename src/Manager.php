@@ -114,6 +114,9 @@ class Manager {
                 'columns'             => 3,
                 'body_class'          => '',
 
+            // Colors
+                'colors'              => [],
+
             // Labels
                 'labels'              => [],
         ];
@@ -451,8 +454,11 @@ class Manager {
         // Render header (same pattern as wp-register-tables)
         self::render_header( $id, $config, $addons );
 
+        // Build inline color overrides
+        $style_attr = self::build_color_style( $config['colors'] );
+
         ?>
-        <div class="wrap addons-wrap">
+        <div class="wrap addons-wrap"<?php echo $style_attr; ?>>
             <?php self::render_admin_notices( $config ); ?>
 
             <?php
@@ -893,7 +899,7 @@ class Manager {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
-        foreach ( $addons as &$addon ) {
+        foreach ( $addons as $key => &$addon ) {
             // Explicit status override
             if ( ! empty( $addon['status'] ) ) {
                 $addon['_status'] = $addon['status'];
@@ -928,6 +934,66 @@ class Manager {
     /* =========================================================================
      * UTILITY METHODS
      * ========================================================================= */
+
+    /**
+     * Build inline style attribute from color overrides
+     *
+     * Maps config color keys to CSS custom properties. Only non-empty
+     * values are included, so anything not set falls back to the
+     * :root defaults in the stylesheet.
+     *
+     * @param array $colors Color overrides from config.
+     *
+     * @return string The style attribute string (with leading space) or empty.
+     * @since 1.0.0
+     */
+    private static function build_color_style( array $colors ): string {
+        if ( empty( $colors ) ) {
+            return '';
+        }
+
+        // Map config keys to CSS custom property names
+        $map = [
+                'accent'                 => '--ao-accent',
+                'accent_hover'           => '--ao-accent-hover',
+                'success'                => '--ao-success',
+                'text_primary'           => '--ao-text-primary',
+                'text_secondary'         => '--ao-text-secondary',
+                'text_muted'             => '--ao-text-muted',
+                'border'                 => '--ao-border',
+                'border_light'           => '--ao-border-light',
+                'bg_white'               => '--ao-bg-white',
+                'bg_subtle'              => '--ao-bg-subtle',
+                'image_bg'               => '--ao-image-bg',
+                'pro_bg'                 => '--ao-pro-bg',
+                'pro_text'               => '--ao-pro-text',
+                'badge_popular_bg'       => '--ao-badge-popular-bg',
+                'badge_popular_text'     => '--ao-badge-popular-text',
+                'badge_new_bg'           => '--ao-badge-new-bg',
+                'badge_new_text'         => '--ao-badge-new-text',
+                'badge_recommended_bg'   => '--ao-badge-recommended-bg',
+                'badge_recommended_text' => '--ao-badge-recommended-text',
+                'badge_coming_soon_bg'   => '--ao-badge-coming-soon-bg',
+                'badge_coming_soon_text' => '--ao-badge-coming-soon-text',
+                'radius'                 => '--ao-radius',
+                'radius_lg'              => '--ao-radius-lg',
+        ];
+
+        $declarations = [];
+
+        foreach ( $colors as $key => $value ) {
+            if ( empty( $value ) || ! isset( $map[ $key ] ) ) {
+                continue;
+            }
+            $declarations[] = esc_attr( $map[ $key ] ) . ':' . esc_attr( $value );
+        }
+
+        if ( empty( $declarations ) ) {
+            return '';
+        }
+
+        return ' style="' . implode( ';', $declarations ) . '"';
+    }
 
     /**
      * Normalize add-on definitions

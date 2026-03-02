@@ -79,6 +79,9 @@ register_addons_page( 'page_id', [
     'columns'    => 3,                       // Grid columns (2, 3, or 4)
     'body_class' => '',                      // Additional CSS body class
 
+    // Colors (override any CSS custom property)
+    'colors' => [],                          // key => value pairs (see Colors section)
+
     // Labels
     'labels' => [
         'search'    => 'Search add-ons...',
@@ -135,9 +138,9 @@ When a `plugin` basename is provided, the library automatically detects the add-
 
 | Status        | Condition                         | Card Action       |
 |---------------|-----------------------------------|-------------------|
-| **Active**    | Plugin is installed and activated  | Green checkmark   |
-| **Installed** | Plugin exists but is not active    | "Activate" button |
-| **Available** | Plugin is not installed            | "Get This Add-on" |
+| **Active**    | Plugin is installed and activated | Green checkmark   |
+| **Installed** | Plugin exists but is not active   | "Activate" button |
+| **Available** | Plugin is not installed           | "Get This Add-on" |
 
 The "Activate" button works directly from the add-ons page with nonce verification.
 
@@ -173,13 +176,13 @@ Force a specific status regardless of plugin detection:
 
 Badges appear in the top-right corner of add-on cards:
 
-| Badge Key       | Display Text  | Color  |
-|-----------------|---------------|--------|
-| `popular`       | Popular       | Amber  |
-| `new`           | New           | Green  |
-| `recommended`   | Recommended   | Blue   |
-| `coming_soon`   | Coming Soon   | Gray   |
-| Custom string   | Auto-labeled  | Gray   |
+| Badge Key     | Display Text | Color |
+|---------------|--------------|-------|
+| `popular`     | Popular      | Amber |
+| `new`         | New          | Green |
+| `recommended` | Recommended  | Blue  |
+| `coming_soon` | Coming Soon  | Gray  |
+| Custom string | Auto-labeled | Gray  |
 
 ## Categories
 
@@ -242,6 +245,51 @@ register_addons_page( 'my-plugin-addons', [
     ],
 ] );
 ```
+
+## Colors
+
+Override any CSS custom property via the `colors` config. Only the keys you set are output as inline styles — everything
+else falls back to the built-in defaults.
+
+```php
+register_addons_page( 'my-plugin-addons', [
+    'colors' => [
+        'accent'       => '#6366f1',
+        'accent_hover' => '#4f46e5',
+        'pro_bg'       => 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+    ],
+] );
+```
+
+Available keys:
+
+| Key                      | CSS Variable                  | Default         |
+|--------------------------|-------------------------------|-----------------|
+| `accent`                 | `--ao-accent`                 | `#2271b1`       |
+| `accent_hover`           | `--ao-accent-hover`           | `#135e96`       |
+| `success`                | `--ao-success`                | `#00a32a`       |
+| `text_primary`           | `--ao-text-primary`           | `#1d2327`       |
+| `text_secondary`         | `--ao-text-secondary`         | `#646970`       |
+| `text_muted`             | `--ao-text-muted`             | `#a7aaad`       |
+| `border`                 | `--ao-border`                 | `#c3c4c7`       |
+| `border_light`           | `--ao-border-light`           | `#e0e0e0`       |
+| `bg_white`               | `--ao-bg-white`               | `#fff`          |
+| `bg_subtle`              | `--ao-bg-subtle`              | `#f6f7f7`       |
+| `image_bg`               | `--ao-image-bg`               | `#f6f7f7`       |
+| `pro_bg`                 | `--ao-pro-bg`                 | Gradient (blue) |
+| `pro_text`               | `--ao-pro-text`               | `#fff`          |
+| `badge_popular_bg`       | `--ao-badge-popular-bg`       | `#fcf0e3`       |
+| `badge_popular_text`     | `--ao-badge-popular-text`     | `#9a6700`       |
+| `badge_new_bg`           | `--ao-badge-new-bg`           | `#edfaef`       |
+| `badge_new_text`         | `--ao-badge-new-text`         | `#1a7a2e`       |
+| `badge_recommended_bg`   | `--ao-badge-recommended-bg`   | `#e5f0fa`       |
+| `badge_recommended_text` | `--ao-badge-recommended-text` | `#1d4ed8`       |
+| `badge_coming_soon_bg`   | `--ao-badge-coming-soon-bg`   | `#f0f0f1`       |
+| `badge_coming_soon_text` | `--ao-badge-coming-soon-text` | `#50575e`       |
+| `radius`                 | `--ao-radius`                 | `6px`           |
+| `radius_lg`              | `--ao-radius-lg`              | `8px`           |
+
+Values accept any valid CSS — colors, gradients, or size units depending on the property.
 
 ## Body Classes
 
